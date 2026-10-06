@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="local/brandmask/db" VERSION="20261002" COMMENT="Brand Mask — per-tenant branding profiles"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
+>
+  <TABLES>
+    <TABLE NAME="local_brandmask_profile" COMMENT="One branding profile per tenant/subdomain">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="brandkey" TYPE="char" LENGTH="100" NOTNULL="true" COMMENT="Unique short code for ?brand=KEY and session match"/>
+        <FIELD NAME="hostname" TYPE="char" LENGTH="255" NOTNULL="false" COMMENT="Host header this brand matches (lowercase, no port)"/>
+        <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="true"/>
+        <FIELD NAME="enabled" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="1"/>
+        <FIELD NAME="primarycolor" TYPE="char" LENGTH="30" NOTNULL="false"/>
+        <FIELD NAME="accentcolor" TYPE="char" LENGTH="30" NOTNULL="false"/>
+        <FIELD NAME="logourl" TYPE="char" LENGTH="1333" NOTNULL="false"/>
+        <FIELD NAME="loginbgcolor" TYPE="char" LENGTH="30" NOTNULL="false"/>
+        <FIELD NAME="loginbgurl" TYPE="char" LENGTH="1333" NOTNULL="false"/>
+        <FIELD NAME="extracss" TYPE="text" NOTNULL="false"/>
+        <FIELD NAME="fromname" TYPE="char" LENGTH="255" NOTNULL="false"/>
+        <FIELD NAME="fromemail" TYPE="char" LENGTH="255" NOTNULL="false"/>
+        <FIELD NAME="emailenabled" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" COMMENT="0=normal default emails, 1=brand this tenant's emails"/>
+        <FIELD NAME="emailsendas" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" COMMENT="0=site address + tenant display name, 1=send as fromemail (needs partner DNS)"/>
+        <FIELD NAME="replytoname" TYPE="char" LENGTH="255" NOTNULL="false"/>
+        <FIELD NAME="replytoemail" TYPE="char" LENGTH="255" NOTNULL="false"/>
+        <FIELD NAME="emailsubjectprefix" TYPE="char" LENGTH="255" NOTNULL="false"/>
+        <FIELD NAME="emailfooter" TYPE="text" NOTNULL="false"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="brandkey" UNIQUE="true" FIELDS="brandkey"/>
+        <INDEX NAME="hostname" UNIQUE="false" FIELDS="hostname"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="local_brandmask_cohort" COMMENT="Which cohort(s) a branding profile targets; only their members get masked">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="profileid" TYPE="int" LENGTH="10" NOTNULL="true"/>
+        <FIELD NAME="cohortid" TYPE="int" LENGTH="10" NOTNULL="true"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="profileid" TYPE="foreign" FIELDS="profileid" REFTABLE="local_brandmask_profile" REFFIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="cohortid" UNIQUE="false" FIELDS="cohortid"/>
+        <INDEX NAME="profilecohort" UNIQUE="true" FIELDS="profileid, cohortid"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="local_brandmask_user" COMMENT="Explicit per-user targeting; overrides cohort for that user">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="profileid" TYPE="int" LENGTH="10" NOTNULL="true"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="profileid" TYPE="foreign" FIELDS="profileid" REFTABLE="local_brandmask_profile" REFFIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="userid" UNIQUE="false" FIELDS="userid"/>
+        <INDEX NAME="profileuser" UNIQUE="true" FIELDS="profileid, userid"/>
+      </INDEXES>
+    </TABLE>
+  </TABLES>
+</XMLDB>
