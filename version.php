@@ -25,8 +25,9 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'local_brandmask';
-$plugin->version   = 2026100502;
+$plugin->version   = 2026100503;
 $plugin->requires  = 2024042200;       // Moodle 4.4.0 — first release with the output head hook.
-$plugin->supported = [404, 500];       // Moodle 4.4 through 5.0 (current max branch); APIs used are un-deprecated.
+$plugin->supported = [404, 503];       // Moodle 4.4 through 5.3 (current latest); the hook + message
+                                       // callback the plugin uses are core-stable and un-deprecated.
 $plugin->maturity  = MATURITY_ALPHA;
 $plugin->release   = '0.7.6';

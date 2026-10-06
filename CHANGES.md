@@ -18,7 +18,7 @@ Custom-domain support, searchable people/cohort pickers, and an edge-case harden
 - **Colour picker is now a proper AMD module** that reflects named/`rgb()`/`hsl()` values in the
   swatch (not only hex) and takes its accessible name from the field label.
 - Display name is now **White-Label Branding** (frankenstyle component stays `local_brandmask`).
-- Declares support for **Moodle 4.4 → 5.0**; minimum requirement lowered to 4.4.
+- Declares support for **Moodle 4.4 → 5.3**; minimum requirement lowered to 4.4.
 
 ### Fixed — 15 findings from an adversarial edge-case review, each independently verified
 - Editing a user-targeted profile no longer fatals when a custom profile field is in "Show user
