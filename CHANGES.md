@@ -2,6 +2,21 @@
 
 All notable changes to this plugin are documented here.
 
+## 0.7.7 — 2026-10-27
+
+Review feedback from the Moodle Marketplace (MMR-389).
+
+### Changed
+- **Branding CSS moved to `styles.css`.** The structural rules now live in the plugin stylesheet
+  and are gated with `:has(#local-brandmask)`, so they take effect only on a branded page and
+  never affect an unbranded one. Only the per-tenant values (brand colour, accent, login
+  background) are injected inline, as CSS custom properties.
+- **Minimum Moodle version is 4.5** (now matches the README); declares support for 4.5 → 5.3.
+
+### Fixed
+- Added the missing `userids_help` language string for the specific-users picker.
+- Moved the Go-live DNS guidance notes into language strings.
+
 ## 0.7.6 — 2026-10-05
 
 Custom-domain support, searchable people/cohort pickers, and an edge-case hardening pass.

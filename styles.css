@@ -1,0 +1,89 @@
+/* local_brandmask — structural branding rules.
+ *
+ * The per-tenant VALUES (brand colour, accent, login background) are set as CSS custom properties
+ * in a small inline <style id="local-brandmask"> block in the page head, which the plugin emits
+ * ONLY for a branded user (see classes/local/brander.php). Every rule here is gated with
+ * :has(#local-brandmask), so it applies only when that block is present; an unbranded page has no
+ * such element and renders as stock Moodle.
+ *
+ * @package   local_brandmask
+ * @copyright 2026 Vbounds LLC (Sternfast)
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+/* Top chrome: clean white bar with a brand accent line, so logos stay crisp. */
+html:has(#local-brandmask) .navbar.fixed-top {
+    background-color: #fff !important;
+    background-image: none !important;
+    border-bottom: 3px solid var(--bm-primary) !important;
+    box-shadow: 0 1px 10px rgba(16, 24, 32, .06) !important;
+}
+html:has(#local-brandmask) .navbar.fixed-top,
+html:has(#local-brandmask) .navbar.fixed-top .nav-link,
+html:has(#local-brandmask) .navbar.fixed-top .navbar-brand,
+html:has(#local-brandmask) .navbar.fixed-top a,
+html:has(#local-brandmask) .navbar.fixed-top .navbar-nav .nav-link {
+    color: #2a2f36 !important;
+}
+html:has(#local-brandmask) .navbar.fixed-top .nav-link:hover,
+html:has(#local-brandmask) .navbar.fixed-top .nav-link:focus {
+    color: var(--bm-primary) !important;
+}
+html:has(#local-brandmask) .navbar.fixed-top .nav-link.active,
+html:has(#local-brandmask) .navbar.fixed-top .active > .nav-link {
+    color: var(--bm-primary) !important;
+    box-shadow: inset 0 -3px 0 var(--bm-primary);
+}
+
+/* Brand-colour accents. */
+html:has(#local-brandmask) .btn-primary {
+    background-color: var(--bm-primary) !important;
+    border-color: var(--bm-primary) !important;
+}
+html:has(#local-brandmask) .btn-primary:hover,
+html:has(#local-brandmask) .btn-primary:focus,
+html:has(#local-brandmask) .btn-primary:active {
+    background-color: var(--bm-accent) !important;
+    border-color: var(--bm-accent) !important;
+}
+html:has(#local-brandmask) .btn-outline-primary {
+    color: var(--bm-primary) !important;
+    border-color: var(--bm-primary) !important;
+}
+html:has(#local-brandmask) .btn-outline-primary:hover {
+    background-color: var(--bm-primary) !important;
+    color: #fff !important;
+}
+html:has(#local-brandmask) a:not(.btn) {
+    color: var(--bm-primary);
+}
+html:has(#local-brandmask) a:not(.btn):hover {
+    color: var(--bm-accent);
+}
+html:has(#local-brandmask) .text-primary {
+    color: var(--bm-primary) !important;
+}
+html:has(#local-brandmask) .bg-primary {
+    background-color: var(--bm-primary) !important;
+}
+html:has(#local-brandmask) .progress-bar {
+    background-color: var(--bm-primary) !important;
+}
+html:has(#local-brandmask) .page-item.active .page-link {
+    background-color: var(--bm-primary) !important;
+    border-color: var(--bm-primary) !important;
+}
+html:has(#local-brandmask) .custom-control-input:checked ~ .custom-control-label::before {
+    background-color: var(--bm-primary) !important;
+    border-color: var(--bm-primary) !important;
+}
+
+/* Login page: soft backdrop + a branded card. */
+html:has(#local-brandmask) #page-login-index {
+    background: var(--bm-loginbg) !important;
+}
+html:has(#local-brandmask) #page-login-index .login-container {
+    border-top: 4px solid var(--bm-primary) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 12px 44px rgba(16, 24, 32, .12) !important;
+}

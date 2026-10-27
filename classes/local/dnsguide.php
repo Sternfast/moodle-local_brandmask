@@ -46,8 +46,7 @@ class dnsguide {
                 'type' => 'A',
                 'host' => $hostname,
                 'value' => $ip,
-                'note' => 'Point this host at your Moodle server. For a client\'s own domain, they add this record; '
-                    . 'it works for a sub-host (learn.theirdomain.com) or a root/apex domain.',
+                'note' => get_string('dnsnote_subdomain', 'local_brandmask'),
             ]];
         }
         // No server IP configured: offer an A-record placeholder and a CNAME alternative.
@@ -57,13 +56,13 @@ class dnsguide {
                 'type' => 'A',
                 'host' => $hostname,
                 'value' => '<your Moodle server public IP>',
-                'note' => 'Works for any host, including a root/apex domain.',
+                'note' => get_string('dnsnote_subdomaina', 'local_brandmask'),
             ],
             [
                 'type' => 'CNAME',
                 'host' => $hostname,
                 'value' => $wwwhost,
-                'note' => 'Alternative for a sub-host only (e.g. learn.theirdomain.com) — not for a root/apex domain.',
+                'note' => get_string('dnsnote_subdomaincname', 'local_brandmask'),
             ],
         ];
     }
@@ -87,19 +86,19 @@ class dnsguide {
                 'type' => 'TXT',
                 'host' => $domain,
                 'value' => 'v=spf1 include:YOUR-MAIL-HOST ~all',
-                'note' => 'SPF — replace YOUR-MAIL-HOST with the server or relay that sends your Moodle email.',
+                'note' => get_string('dnsnote_spf', 'local_brandmask'),
             ],
             [
                 'type' => 'TXT',
                 'host' => 'SELECTOR._domainkey.' . $domain,
                 'value' => '<DKIM public key from your mail host>',
-                'note' => 'DKIM — your mail server or provider generates the selector + key; publish exactly what it gives you.',
+                'note' => get_string('dnsnote_dkim', 'local_brandmask'),
             ],
             [
                 'type' => 'TXT',
                 'host' => '_dmarc.' . $domain,
                 'value' => 'v=DMARC1; p=none; rua=mailto:dmarc@' . $domain,
-                'note' => 'DMARC — start with p=none to monitor, then tighten to quarantine or reject.',
+                'note' => get_string('dnsnote_dmarc', 'local_brandmask'),
             ],
         ];
         return ['domain' => $domain, 'records' => $records];

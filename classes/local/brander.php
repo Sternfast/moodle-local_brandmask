@@ -47,52 +47,23 @@ class brander {
         $loginbgurl = self::css_url($p->loginbgurl ?? '');
         $logos   = self::logo_urls($p);
 
-        $css = '';
-
+        // Per-tenant VALUES only. The structural selectors live in styles.css, gated with
+        // :has(#local-brandmask) so they take effect only when this block is present (i.e. for a
+        // branded user). This head block injects just the custom properties plus the data-driven
+        // logo lockup; an unbranded page has no such block, so it renders as stock Moodle.
+        $vars = [];
         if ($primary) {
-            $css .= "
-/* Top chrome: clean white bar with a brand accent line, so logos stay crisp. */
-html body .navbar.fixed-top, html body .navbar.fixed-top.bg-white,
- html body .navbar.fixed-top.navbar-light, html body .navbar.fixed-top.navbar-expand {
- background-color:#ffffff !important; background-image:none !important;
- border-bottom:3px solid {$primary} !important; box-shadow:0 1px 10px rgba(16,24,32,.06) !important; }
-html body .navbar.fixed-top, html body .navbar.fixed-top .nav-link,
- html body .navbar.fixed-top .navbar-brand,
- html body .navbar.fixed-top a, html body .navbar.fixed-top .navbar-nav .nav-link { color:#2a2f36 !important; }
-html body .navbar.fixed-top .nav-link:hover, html body .navbar.fixed-top .nav-link:focus { color:{$primary} !important; }
-html body .navbar.fixed-top .nav-link.active,
- html body .navbar.fixed-top .active > .nav-link { color:{$primary} !important; box-shadow:inset 0 -3px 0 {$primary}; }
-/* Brand-colour accents. */
-.btn-primary { background-color:{$primary} !important; border-color:{$primary} !important; }
-.btn-primary:hover, .btn-primary:focus,
- .btn-primary:active { background-color:{$accent} !important; border-color:{$accent} !important; }
-.btn-outline-primary { color:{$primary} !important; border-color:{$primary} !important; }
-.btn-outline-primary:hover { background-color:{$primary} !important; color:#fff !important; }
-a:not(.btn) { color:{$primary}; }
-a:not(.btn):hover { color:{$accent}; }
-.text-primary { color:{$primary} !important; }
-.bg-primary { background-color:{$primary} !important; }
-.progress-bar { background-color:{$primary} !important; }
-.page-item.active .page-link { background-color:{$primary} !important; border-color:{$primary} !important; }
-.custom-control-input:checked ~ .custom-control-label::before {
- background-color:{$primary} !important;
- border-color:{$primary} !important; }
-";
+            $vars[] = '--bm-primary:' . $primary;
+            $vars[] = '--bm-accent:' . $accent;
         }
-
-        // Login page: soft backdrop + a branded card.
         $bg = $loginbgurl ? "url('{$loginbgurl}') center center / cover no-repeat fixed" : ($loginbg ?: '#eef1f5');
-        $css .= "body#page-login-index { background:{$bg} !important; }\n";
-        if ($primary) {
-            $css .= "body#page-login-index .login-container {
-border-top:4px solid {$primary} !important;
-border-radius:12px !important;
-box-shadow:0 12px 44px rgba(16,24,32,.12) !important; }\n";
-        }
+        $vars[] = '--bm-loginbg:' . $bg;
 
-        // Logo lockup (navbar + login): the only mark Brand Mask leaves on the sign-in page.
-        // The host's own guest access, headings, footer and policy links are left exactly as the
-        // site renders them — Brand Mask overlays logo and colour, nothing more.
+        $css = ':root{' . implode(';', $vars) . ";}\n";
+
+        // Logo lockup (navbar + login): the only mark Brand Mask leaves on the sign-in page. It is
+        // data-driven (logo URLs, one- or two-logo layout) so it is generated here rather than in
+        // styles.css. The host's own guest access, headings, footer and policy links are untouched.
         $css .= self::logo_css($logos);
 
         $out = "\n<!-- local_brandmask: " . s($p->brandkey) . " -->\n";
@@ -143,12 +114,12 @@ background-size:auto 36px;background-repeat:no-repeat;";
         }
 
         return "
-html body .navbar.fixed-top .navbar-brand {
+html:has(#local-brandmask) .navbar.fixed-top .navbar-brand {
 {$nav} width:{$navw}; height:44px; font-size:0 !important; color:transparent !important; overflow:hidden; }
-html body .navbar.fixed-top .navbar-brand img { opacity:0 !important; width:0 !important; height:0 !important; }
-body#page-login-index .loginform > h1.login-heading {
+html:has(#local-brandmask) .navbar.fixed-top .navbar-brand img { opacity:0 !important; width:0 !important; height:0 !important; }
+html:has(#local-brandmask) #page-login-index .loginform > h1.login-heading {
 font-size:0 !important; line-height:0 !important; margin:2px auto 24px !important; }
-body#page-login-index .loginform > h1.login-heading::before {
+html:has(#local-brandmask) #page-login-index .loginform > h1.login-heading::before {
 content:''; display:block; margin:0 auto; width:{$loginw}; height:{$loginh}; {$login} }
 ";
     }
