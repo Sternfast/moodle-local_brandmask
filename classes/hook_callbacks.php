@@ -34,6 +34,9 @@ class hook_callbacks {
      *
      * This is the ONLY thing the plugin does to a page. If no tenant resolves,
      * it adds nothing and the page renders exactly as stock Moodle.
+     *
+     * @param \core\hook\output\before_standard_head_html_generation $hook The head-generation hook.
+     * @return void
      */
     public static function before_standard_head_html_generation(
         \core\hook\output\before_standard_head_html_generation $hook

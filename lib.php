@@ -28,6 +28,13 @@
  * These are PUBLIC brand assets — they appear on the pre-login sign-in page — so they are
  * served without a login requirement. They are small, admin-uploaded image files only.
  *
+ * @param stdClass $course The course object (unused; assets live at system context).
+ * @param stdClass $cm The course module (unused).
+ * @param context $context The request context; must be the system context.
+ * @param string $filearea The file area: logo, logopartner or loginbg.
+ * @param array $args The remaining URL path parts (itemid, optional subpath, filename).
+ * @param bool $forcedownload Whether to force a download rather than inline display.
+ * @param array $options Additional options passed to send_stored_file().
  * @return bool false if not found (Moodle then sends 404)
  * @package local_brandmask
  */

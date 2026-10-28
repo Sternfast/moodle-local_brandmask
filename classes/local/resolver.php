@@ -98,6 +98,9 @@ class resolver {
      * The brand for a SPECIFIC user, bypassing the request-scoped cache and any request inputs.
      * This is what the (future) email layer calls per-recipient — current()'s static must never
      * leak one recipient's brand to the next.
+     *
+     * @param int $userid The user to resolve a brand for.
+     * @return object|null The branding profile record, or null if none applies.
      */
     public static function for_user(int $userid): ?object {
         if (!self::usable() || $userid <= 0) {
@@ -109,6 +112,9 @@ class resolver {
     /**
      * Profile for a user: an explicit per-user assignment wins, else cohort membership.
      * Ties broken by lowest profile id (deterministic).
+     *
+     * @param int $userid The user to resolve a brand for.
+     * @return object|null The branding profile record, or null if none applies.
      */
     protected static function by_membership(int $userid): ?object {
         global $DB;

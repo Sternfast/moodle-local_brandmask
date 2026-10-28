@@ -83,6 +83,9 @@ class brander {
     /**
      * Navbar lockup + login lockup. One logo, or two side-by-side with a hairline divider.
      * A fixed-width lockup block is left-aligned in the navbar and centred on the login card.
+     *
+     * @param array $logos The ['primary' => string, 'partner' => string] logo URLs.
+     * @return string The scoped CSS for the logo lockup, or '' if there is no primary logo.
      */
     protected static function logo_css(array $logos): string {
         if ($logos['primary'] === '') {
@@ -92,25 +95,27 @@ class brander {
         $b = $logos['partner'] !== '' ? addcslashes($logos['partner'], "'\"()\\\r\n") : '';
 
         if ($b !== '') {
-            $nav   = "background-image:url('{$a}'),linear-gradient(#dde2e7,#dde2e7),url('{$b}');
-background-position:left center,112px center,right center;
-background-size:auto 22px,1px 20px,auto 22px;
+            // Two logos with a hairline divider centred in the gap between them (a co-brand lockup).
+            // Widths assume a roughly 2.3:1 logo; the gap is generous so logos never overlap.
+            $nav   = "background-image:url('{$a}'),linear-gradient(#d4d9df,#d4d9df),url('{$b}');
+background-position:left center,82px center,right center;
+background-size:auto 30px,1px 24px,auto 30px;
 background-repeat:no-repeat;";
-            $navw  = '280px';
-            $login = "background-image:url('{$a}'),linear-gradient(#dde2e7,#dde2e7),url('{$b}');
-background-position:left center,126px center,right center;
-background-size:auto 28px,1px 26px,auto 28px;
+            $navw  = '165px';
+            $login = "background-image:url('{$a}'),linear-gradient(#d4d9df,#d4d9df),url('{$b}');
+background-position:left center,125px center,right center;
+background-size:auto 46px,1px 36px,auto 46px;
 background-repeat:no-repeat;";
-            $loginw = '300px';
-            $loginh = '32px';
+            $loginw = '250px';
+            $loginh = '48px';
         } else {
             $nav    = "background-image:url('{$a}');background-position:left center;
-background-size:auto 24px;background-repeat:no-repeat;";
-            $navw   = '160px';
+background-size:auto 32px;background-repeat:no-repeat;";
+            $navw   = '190px';
             $login  = "background-image:url('{$a}');background-position:center center;
-background-size:auto 36px;background-repeat:no-repeat;";
-            $loginw = '240px';
-            $loginh = '40px';
+background-size:auto 54px;background-repeat:no-repeat;";
+            $loginw = '260px';
+            $loginh = '56px';
         }
 
         return "

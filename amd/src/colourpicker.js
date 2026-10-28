@@ -55,7 +55,7 @@ const toHex = (value) => {
     if (!m) {
         return '';
     }
-    const h = (n) => ('0' + (parseInt(n, 10) & 255).toString(16)).slice(-2);
+    const h = (n) => ('0' + Math.min(255, parseInt(n, 10)).toString(16)).slice(-2);
     return '#' + h(m[1]) + h(m[2]) + h(m[3]);
 };
 

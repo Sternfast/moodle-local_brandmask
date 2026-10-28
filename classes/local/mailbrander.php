@@ -29,6 +29,11 @@ class mailbrander {
     /**
      * Brand one email for one recipient.
      *
+     * @param object $profile The tenant branding profile.
+     * @param string $subject The original message subject.
+     * @param string $html The original HTML body.
+     * @param string $text The original plain-text body.
+     * @param object|null $userfrom The original sender, if any.
      * @return array {subject, html, text, userfrom, replytoemail, replytoname}
      */
     public static function brand(

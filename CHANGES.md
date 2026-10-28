@@ -2,6 +2,26 @@
 
 All notable changes to this plugin are documented here.
 
+## 0.7.8 — 2026-10-27
+
+Follow-up to the review fixes: stronger CSS scoping, a cleaner co-brand lockup, and a green build.
+
+### Changed
+- **`styles.css` no longer uses `!important` or generic utility selectors.** The `:has(#local-brandmask)`
+  prefix already outranks Boost's own rules, so the structural styles win on specificity alone, and
+  they now touch only this plugin's own chrome (navbar, primary button, links, login card) rather
+  than shared utilities such as `.text-primary`. This narrows the earlier global-selector surface.
+- **Co-brand logo lockup.** When a profile has a primary and a partner logo, the navbar and login
+  card show both side by side with a hairline divider, sized so the two never overlap.
+- **Colour-neutral sign-in form.** The login button and links are a neutral grey rather than the
+  brand colour, so the sign-in card reads clean under any brand; the brand still shows through the
+  logo lockup and the thin top accent line. Content pages keep the brand colour on their controls.
+- **Supported versions now 4.5 (LTS) → 5.2** (the current stable line), matching what CI tests.
+
+### Fixed
+- Continuous integration is green: the tested Moodle matrix is 4.5 and 5.2 (dropped a branch that
+  is not yet installable), and the colour helper no longer uses a bitwise operator.
+
 ## 0.7.7 — 2026-10-27
 
 Review feedback from the Moodle Marketplace (MMR-389).

@@ -101,9 +101,9 @@ class profile_form extends \moodleform {
             'valuehtmlcallback' => function ($userid) {
                 global $OUTPUT;
                 $context = \context_system::instance();
-                // allowcustom=false: identity fields stay on the {user} table (email, dept, …) with
-                // no joins, so passing get_sql()->selects to get_user() is safe. A custom profile
-                // field in "Show user identity" would need a joined query and would otherwise fatal.
+                // With allowcustom=false the identity fields stay on the {user} table (email, dept,
+                // …) with no joins, so passing get_sql()->selects to get_user() is safe. A custom
+                // profile field in "Show user identity" would need a joined query and would fatal.
                 $fields = \core_user\fields::for_name()->with_identity($context, false);
                 $record = \core_user::get_user($userid, 'id ' . $fields->get_sql()->selects, IGNORE_MISSING);
                 if (!$record) {
